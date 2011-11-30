@@ -1,0 +1,29 @@
+The purpose of this project is to render server-side Highchart and return
+the result as an svg string.
+
+The basic idea is to send data through to the amazing phantomjs
+(http://www.phantomjs.org/) to handle the rendering and return the content.
+
+
+Requrirements:
+1. Webserver capable of executing PHP scripts
+2. phantomjs cabale of being run in 'headless' mode (it will be exec'd by the
+   webserver after all).  I built qt-webkit 4.8 with -qpa as an option.
+
+
+This service accepts 1 required param
+$_REQUEST['chart'] //json data to be passed to Highcharts.Chart(<<HERE>>);
+the chart must:
+chart.renderTo = 'container'
+chart.renderer = 'SVG'
+
+and should kill all animations/interactive components.
+
+And 2 optional params
+
+$_REQUEST['ignore_servify'] //place you in control of killing animations and setting proper container/renderer etc
+$_REQUEST['theme'] //allows you to override the default theme (optionally set in config.ini)
+
+
+There is a basic config.ini.sample file included which *must* be copied to config.ini
+and at least set the phantomjs_path parameter.

@@ -1,0 +1,13 @@
+[platform]
+temp_dir = "/dev/shm"
+
+[phantomjs]
+path = "/opt/phantomjs/bin/phantomjs"
+extra_options = "-platform minimal"
+
+[highcharts]
+version = 2.1.9
+theme = dark-green
+
+[jquery]
+version = 1.7.1
