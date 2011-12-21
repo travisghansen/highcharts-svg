@@ -130,9 +130,22 @@ $output = shell_exec(escapeshellcmd($command));
 
 clean_output($output);
 
+$output_format = 'png';
+
 if( ! empty($output)){
-    header("Content-Type: image/svg+xml");
-    echo $output;
+    switch($output_format){
+        case "png":
+            $im = new Imagick();
+            $im->readImageBlob($output);
+            $im->setImageFormat('png');
+            header("Content-Type: image/png");
+            echo $im->getImageBlob();
+            break;
+        case "svg":
+        default:
+            header("Content-Type: image/svg+xml");
+            echo $output;
+            break;
 }
 
 unlink($html_file_path);
