@@ -58,7 +58,7 @@ function clean_output(&$output){
 $chart_data = $_REQUEST['chart'];
 
 // sample chart for testing
-//$chart_data = '{"chart":{"defaultSeriesType":"area","renderTo":"containerfoo","renderer":"SVG"},"title":{"text":"Sales By Partner"},"subtitle":{"text":"Source: SecurityTrax"},"xAxis":{"categories":["11\/01\/2011","11\/02\/2011","11\/03\/2011","11\/04\/2011","11\/05\/2011","11\/06\/2011","11\/07\/2011","11\/08\/2011","11\/09\/2011","11\/10\/2011","11\/11\/2011","11\/12\/2011","11\/13\/2011","11\/14\/2011","11\/15\/2011","11\/16\/2011","11\/17\/2011","11\/18\/2011","11\/19\/2011","11\/20\/2011","11\/21\/2011","11\/22\/2011","11\/23\/2011","11\/24\/2011","11\/25\/2011","11\/26\/2011","11\/27\/2011","11\/28\/2011","11\/29\/2011","11\/30\/2011"],"tickmarkPlacement":"on"},"yAxis":{"title":{"text":"Sales"}},"plotOptions":{"area":{"stacking":"normal","lineWidth":1,"lineColor":"#666666","marker":{"lineWidth":1,"lineColor":"#666666"}}},"series":[{"name":"HiValley","data":[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"animation":false}]}';
+$chart_data = '{"chart":{"defaultSeriesType":"area","renderTo":"containerfoo","renderer":"SVG"},"title":{"text":"Sales By Partner"},"subtitle":{"text":"Source: SecurityTrax"},"xAxis":{"categories":["11\/01\/2011","11\/02\/2011","11\/03\/2011","11\/04\/2011","11\/05\/2011","11\/06\/2011","11\/07\/2011","11\/08\/2011","11\/09\/2011","11\/10\/2011","11\/11\/2011","11\/12\/2011","11\/13\/2011","11\/14\/2011","11\/15\/2011","11\/16\/2011","11\/17\/2011","11\/18\/2011","11\/19\/2011","11\/20\/2011","11\/21\/2011","11\/22\/2011","11\/23\/2011","11\/24\/2011","11\/25\/2011","11\/26\/2011","11\/27\/2011","11\/28\/2011","11\/29\/2011","11\/30\/2011"],"tickmarkPlacement":"on"},"yAxis":{"title":{"text":"Sales"}},"plotOptions":{"area":{"stacking":"normal","lineWidth":1,"lineColor":"#666666","marker":{"lineWidth":1,"lineColor":"#666666"}}},"series":[{"name":"HiValley","data":[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"animation":false}]}';
 
 if(empty($chart_data)){
     die("chart data is invalid" . PHP_EOL);
@@ -122,32 +122,31 @@ if(isset($config['platform']['temp_dir']) && is_dir($config['platform']['temp_di
     $temp_dir = sys_get_temp_dir();
 }
 
-$html_file_path = tempnam($temp_dir, "highchart");
-file_put_contents($html_file_path, $html);
+$tmp_file_path = tempnam($temp_dir, "highchart");
+file_put_contents($tmp_file_path, $html);
 
-$command = $phantomjs_path . " $phantomjs_cmd_extra_options " . $phantomjs_script . " " . $html_file_path;
-$output = shell_exec(escapeshellcmd($command));
+$command = $phantomjs_path . " $phantomjs_cmd_extra_options " . $phantomjs_script . " " . $tmp_file_path;
+$svg = shell_exec(escapeshellcmd($command));
 
-clean_output($output);
+clean_output($svg);
 
 $output_format = 'png';
 
-if( ! empty($output)){
+if( ! empty($svg)){
     switch($output_format){
         case "png":
-            $im = new Imagick();
-            $im->readImageBlob($output);
-            $im->setImageFormat('png');
+            $png = shell_exec("echo " . escapeshellarg($svg) . " | convert svg:- png:-");
             header("Content-Type: image/png");
-            echo $im->getImageBlob();
+            echo $png;
             break;
         case "svg":
         default:
             header("Content-Type: image/svg+xml");
-            echo $output;
+            echo $svg;
             break;
+    }
 }
 
-unlink($html_file_path);
+unlink($tmp_file_path);
 
 ?>
