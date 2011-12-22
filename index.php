@@ -140,7 +140,7 @@ if( ! empty($svg)){
         case "jpg":
         case "jpeg":
         case "png":
-            $img = shell_exec("echo " . escapeshellarg($svg) . " | convert -background transparent " . escapeshellarg($convert_args) . " svg:- $output_format:-");
+            $img = shell_exec("echo " . escapeshellarg($svg) . " | convert -background transparent $convert_args svg:- $output_format:-");
             header("Content-Type: image/$output_format");
             echo $img;
             break;
