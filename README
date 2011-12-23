@@ -25,6 +25,8 @@ $_REQUEST['ignore_servify'] //place you in control of killing animations and set
 $_REQUEST['theme'] //allows you to override the default theme (optionally set in config.ini)
 $_REQUEST['format'] //jpg/png return raw binary image data instead of svg+xml
 $_REQUEST['convert_args'] //additional args to be passed to 'convert' in transformation to image format above
+$_REQUEST['width'] //hard-coded image width
+$_REQUEST['height'] //hard-coded image height
 
 
 There is a basic config.ini.sample file included which *must* be copied to config.ini
