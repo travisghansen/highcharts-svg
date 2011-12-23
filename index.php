@@ -69,6 +69,23 @@ if(empty($chart_data)){
 if( ! isset($_REQUEST['ignore_servify'])){
     $chart_data = json_decode($chart_data, true);
     serverify_chart_data($chart_data);
+
+    if(isset($config['highcharts']['height'])){
+        $chart_data['chart']['height'] = (int) $config['highcharts']['height'];
+    }
+
+    if(isset($config['highcharts']['width'])){
+        $chart_data['chart']['width'] = (int) $config['highcharts']['width'];
+    }
+
+    if(isset($_REQUEST['height'])){
+        $chart_data['chart']['height'] = (int) $_REQUEST['height'];
+    }
+
+    if(isset($_REQUEST['width'])){
+        $chart_data['chart']['width'] = (int) $_REQUEST['width'];
+    }
+
     $chart_data = json_encode($chart_data);
 }
 
