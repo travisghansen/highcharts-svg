@@ -7,8 +7,8 @@ $file_path = dirname(realpath(__FILE__));
 $config_file_path = $file_path . $s . "config" . $s . "config.ini";
 $javascript_path = $file_path . $s . "javascript";
 
-$bundled_highcharts_version = "2.1.9";
-$bundled_jquery_version = "1.7.1";
+$bundled_highcharts_version = "2.3.3";
+$bundled_jquery_version = "1.8.3";
 
 $config = @parse_ini_file($config_file_path, true);
 if($config === false){
